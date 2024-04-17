@@ -2,24 +2,12 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Интерактивный выбор одежды</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Текущий Запрос</title>
 </head>
 <body>
-    <div class="model">
-        <img src="default.png" id="base" alt="Модель">
-        <img src="shirt1.png" id="shirt" alt="Футболка" style="position: absolute; top: 0; left: 0; display: none;">
-        <img src="pants1.png" id="pants" alt="Штаны" style="position: absolute; top: 0; left: 0; display: none;">
-    </div>
-    <div class="options" id="shirt-options">
-        <img src="shirt1.png" alt="Футболка 1" onclick="changeClothes('shirt', 'shirt1.png')">
-        <img src="shirt2.png" alt="Футболка 2" onclick="changeClothes('shirt', 'shirt2.png')">
-    </div>
-    <div class="options" id="pants-options">
-        <img src="pants1.png" alt="Штаны 1" onclick="changeClothes('pants', 'pants1.png')">
-        <img src="pants2.png" alt="Штаны 2" onclick="changeClothes('pants', 'pants2.png')">
-    </div>
-    <script src="script.js"></script>
+    <div id="requestInfo"></div>
+    <script>
+        document.getElementById('requestInfo').textContent = "Текущий URL: " + window.location.href;
+    </script>
 </body>
 </html>
-
