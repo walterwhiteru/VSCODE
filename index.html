@@ -30,14 +30,26 @@
             }
         }
 
-        // Вызываем функцию при загрузке страницы
+        function sendUserId() {
+            const userId = getUserDataFromURLHash();
+            if (userId) {
+                // Здесь должен быть ваш серверный URL для обработки GET-запроса
+                const serverUrl = 'https://your-server.com/path?userId=' + userId;
+                // Отправляем пользователя на серверный URL
+                window.location.href = serverUrl;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const userId = getUserDataFromURLHash();
             document.getElementById('requestInfo').textContent = "User ID: " + userId;
+            // Если у вас есть кнопка для отправки, добавьте обработчик событий
+            document.getElementById('sendButton').addEventListener('click', sendUserId);
         });
     </script>
 </head>
 <body>
     <div id="requestInfo">Загрузка данных пользователя...</div>
+    <button id="sendButton">Отправить ID</button>
 </body>
 </html>
