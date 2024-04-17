@@ -2,37 +2,30 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Текущий Запрос</title>
+    <title>Текущий Запрос1</title>
+    <script>
+        function getUserDataFromHash(hash) {
+            const userDataMatch = hash.match(/user=([^&]*)/);
+            if (userDataMatch && userDataMatch[1]) {
+                try {
+                    const userDataJson = decodeURIComponent(userDataMatch[1]);
+                    const userData = JSON.parse(userDataJson);
+                    return userData.id; // предполагаем, что userData.id хранит user_id
+                } catch (error) {
+                    console.error('Ошибка при разборе данных пользователя:', error);
+                }
+            }
+            return 'Информация о пользователе не найдена.';
+        }
+        
+        window.onload = function() {
+            const hash = window.location.hash.substring(1); // убираем символ #
+            const userId = getUserDataFromHash(hash);
+            document.getElementById('requestInfo').textContent = "User ID: " + userId;
+        }
+    </script>
 </head>
 <body>
-    <div id="requestInfo"></div>
-    <script>
-        function parseUserData() {
-            // Получаем URL
-            const fullUrl = window.location.href;
-            // Разделяем URL на части до и после #
-            const hashParts = fullUrl.split('#');
-
-            if (hashParts.length > 1) {
-                // Декодируем URI компонент для корректного отображения символов
-                const paramsString = decodeURIComponent(hashParts[1]);
-                // Парсим строку параметров
-                const params = new URLSearchParams(paramsString);
-                // Получаем данные tgWebAppData и декодируем их
-                const tgWebAppData = decodeURIComponent(params.get('tgWebAppData'));
-                // Ищем начало JSON объекта пользователя
-                const userDataJson = tgWebAppData.split('user=')[1].split('&')[0];
-                // Парсим JSON
-                const userData = JSON.parse(decodeURIComponent(userDataJson));
-                // Извлекаем и отображаем user_id
-                document.getElementById('requestInfo').textContent = "User ID: " + userData.id;
-            } else {
-                document.getElementById('requestInfo').textContent = "No user data available.";
-            }
-        }
-
-        // Вызываем функцию при загрузке страницы
-        window.onload = parseUserData;
-    </script>
+    <div id="requestInfo">Загрузка данных пользователя...</div>
 </body>
 </html>
