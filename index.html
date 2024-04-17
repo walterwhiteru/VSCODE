@@ -7,7 +7,32 @@
 <body>
     <div id="requestInfo"></div>
     <script>
-        document.getElementById('requestInfo').textContent = "Текущий URL: " + window.location.href;
+        function parseUserData() {
+            // Получаем URL
+            const fullUrl = window.location.href;
+            // Разделяем URL на части до и после #
+            const hashParts = fullUrl.split('#');
+
+            if (hashParts.length > 1) {
+                // Декодируем URI компонент для корректного отображения символов
+                const paramsString = decodeURIComponent(hashParts[1]);
+                // Парсим строку параметров
+                const params = new URLSearchParams(paramsString);
+                // Получаем данные tgWebAppData и декодируем их
+                const tgWebAppData = decodeURIComponent(params.get('tgWebAppData'));
+                // Ищем начало JSON объекта пользователя
+                const userDataJson = tgWebAppData.split('user=')[1].split('&')[0];
+                // Парсим JSON
+                const userData = JSON.parse(decodeURIComponent(userDataJson));
+                // Извлекаем и отображаем user_id
+                document.getElementById('requestInfo').textContent = "User ID: " + userData.id;
+            } else {
+                document.getElementById('requestInfo').textContent = "No user data available.";
+            }
+        }
+
+        // Вызываем функцию при загрузке страницы
+        window.onload = parseUserData;
     </script>
 </body>
 </html>
