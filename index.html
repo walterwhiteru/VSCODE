@@ -2,27 +2,39 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Текущий Запрос1</title>
+    <title>Текущий Запрос</title>
     <script>
-        function getUserDataFromHash(hash) {
-            const userDataMatch = hash.match(/user=([^&]*)/);
-            if (userDataMatch && userDataMatch[1]) {
-                try {
-                    const userDataJson = decodeURIComponent(userDataMatch[1]);
-                    const userData = JSON.parse(userDataJson);
-                    return userData.id; // предполагаем, что userData.id хранит user_id
-                } catch (error) {
-                    console.error('Ошибка при разборе данных пользователя:', error);
-                }
+        // Функция для извлечения данных пользователя из фрагмента URL
+        function getUserDataFromURLHash() {
+            const urlFragment = window.location.hash.substring(1); // Получаем фрагмент после символа #
+            const queryParams = new URLSearchParams(urlFragment);
+            const tgWebAppData = queryParams.get('tgWebAppData');
+
+            if (!tgWebAppData) {
+                return 'tgWebAppData не найдено в URL.';
             }
-            return 'Информация о пользователе не найдена.';
+
+            // Декодирование данных пользователя из tgWebAppData
+            try {
+                const tgWebAppDataDecoded = decodeURIComponent(tgWebAppData);
+                const userParamMatch = tgWebAppDataDecoded.match(/user=([^&]+)/);
+                if (!userParamMatch) {
+                    return 'Параметр user не найден в tgWebAppData.';
+                }
+                const userJsonString = decodeURIComponent(userParamMatch[1]);
+                const userData = JSON.parse(userJsonString);
+                return userData.id; // Предполагаем, что userData содержит свойство id
+            } catch (error) {
+                console.error('Ошибка при парсинге данных пользователя: ', error);
+                return 'Ошибка при парсинге данных пользователя.';
+            }
         }
-        
-        window.onload = function() {
-            const hash = window.location.hash.substring(1); // убираем символ #
-            const userId = getUserDataFromHash(hash);
+
+        // Вызываем функцию при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const userId = getUserDataFromURLHash();
             document.getElementById('requestInfo').textContent = "User ID: " + userId;
-        }
+        });
     </script>
 </head>
 <body>
