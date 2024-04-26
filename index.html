@@ -1,55 +1,28 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Текущий Запрос</title>
-    <script>
-        // Функция для извлечения данных пользователя из фрагмента URL
-        function getUserDataFromURLHash() {
-            const urlFragment = window.location.hash.substring(1); // Получаем фрагмент после символа #
-            const queryParams = new URLSearchParams(urlFragment);
-            const tgWebAppData = queryParams.get('tgWebAppData');
-
-            if (!tgWebAppData) {
-                return 'tgWebAppData не найдено в URL.';
-            }
-
-            // Декодирование данных пользователя из tgWebAppData
-            try {
-                const tgWebAppDataDecoded = decodeURIComponent(tgWebAppData);
-                const userParamMatch = tgWebAppDataDecoded.match(/user=([^&]+)/);
-                if (!userParamMatch) {
-                    return 'Параметр user не найден в tgWebAppData.';
-                }
-                const userJsonString = decodeURIComponent(userParamMatch[1]);
-                const userData = JSON.parse(userJsonString);
-                return userData.id; // Предполагаем, что userData содержит свойство id
-            } catch (error) {
-                console.error('Ошибка при парсинге данных пользователя: ', error);
-                return 'Ошибка при парсинге данных пользователя.';
-            }
-        }
-
-        function sendUserId() {
-            const userId = getUserDataFromURLHash();
-            if (userId) {
-                // Здесь должен быть ваш серверный URL для обработки GET-запроса
-                const serverUrl = 'https://your-server.com/path?userId=' + userId;
-                // Отправляем пользователя на серверный URL
-                window.location.href = serverUrl;
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const userId = getUserDataFromURLHash();
-            document.getElementById('requestInfo').textContent = "User ID: " + userId;
-            // Если у вас есть кнопка для отправки, добавьте обработчик событий
-            document.getElementById('sendButton').addEventListener('click', sendUserId);
-        });
-    </script>
+<meta charset="UTF-8">
+<title>Кнопки на всю ширину экрана</title>
+<link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div id="requestInfo">Загрузка данных пользователя...</div>
-    <button id="sendButton">Отправить ID</button>
+<body bgcolor="#F5F5DC">
+    <div class="category">Тело</div>
+    <div class="button-container" data="Body">
+        <button class="image-button" is_bordered="false" data="fat">Толстая</button>
+        <button class="image-button" is_bordered="false" data="skinny">Худая</button>
+    </div>
+    <div class="category">Одежда</div>
+    <div class="button-container" data="Clothes">
+        <button class="image-button" is_bordered="false" data="panties">Трусики</button>
+        <button class="image-button" is_bordered="false" data="stockings">Чулки</button>
+        <button class="image-button" is_bordered="false" data="bust">Лифчик</button>
+        <button class="image-button" is_bordered="false" data="latex">Латекс</button>
+        <button class="image-button" is_bordered="false" data="clothed">Полная одежда</button>
+    </div>
+    <div>
+        <button class="generate-button">Сгенерировать</button>
+    </div>
+
+<script src="script.js"></script> <!-- Подключение внешнего скрипта -->
 </body>
 </html>
